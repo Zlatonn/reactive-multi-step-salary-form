@@ -101,6 +101,10 @@ body {
   color: var(--tab-color-active);
 }
 
+.active + .step-line {
+  background: rgb(94, 146, 242);
+}
+
 /* Step Complete */
 .complete .step-num {
   background: var(--tab-color-complete);
@@ -108,6 +112,10 @@ body {
 
 .complete .step-detail {
   color: var(--tab-color-complete);
+}
+
+.complete + .step-line {
+  background: var(--tab-color-complete);
 }
 
 .step-line {
