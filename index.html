@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multi Step Salary Form</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="main">
+      <h1>Multi Step Salary Form</h1>
+
+      <!-- ---------- Step Container ---------- -->
+      <div class="step-container">
+        <div class="step-box">
+          <div class="step-num">1</div>
+          <p class="step-detail">Income</p>
+        </div>
+        <div class="step-line"></div>
+
+        <div class="step-box">
+          <div class="step-num">2</div>
+          <p class="step-detail">Expenses</p>
+        </div>
+        <div class="step-line"></div>
+
+        <div class="step-box">
+          <div class="step-num">3</div>
+          <p class="step-detail">Summary</p>
+        </div>
+      </div>
+
+      <!-- ---------- Body Container ---------- -->
+      <div class="body-container">
+        <div class="body-box">
+          <div class="card-container">
+            <!-- Income -->
+            <div class="card-box">
+              <p class="card-title">Income</p>
+
+              <div class="card-detail">
+                <div class="detail-box">
+                  <div class="sub-detail">
+                    <p>Salary</p>
+                    <input type="text" placeholder="Enter your salary..." />
+                  </div>
+                  <div class="sub-detail">
+                    <p>Bonus</p>
+                    <input type="text" placeholder="Enter your bonus..." />
+                  </div>
+                  <div class="sub-detail">
+                    <p>Investment</p>
+                    <input type="text" placeholder="Enter your investment..." />
+                  </div>
+                  <div class="sub-detail">
+                    <p>Other</p>
+                    <input type="text" placeholder="Enter your ohter..." />
+                  </div>
+                </div>
+
+                <div class="detail-box">
+                  <div class="sub-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem, praesentium?</p>
+                  </div>
+                  <div class="sub-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem, praesentium?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expenese -->
+            <div class="card-box">
+              <p class="card-title">Expenese</p>
+
+              <div class="card-detail">
+                <div class="detail-box">
+                  <div class="sub-detail">
+                    <p>Housing</p>
+                    <input type="text" placeholder="Enter your housing..." />
+                  </div>
+                  <div class="sub-detail">
+                    <p>Food</p>
+                    <input type="text" placeholder="Enter your food..." />
+                  </div>
+                  <div class="sub-detail">
+                    <p>Transportation</p>
+                    <input type="text" placeholder="Enter your transportation..." />
+                  </div>
+                  <div class="sub-detail">
+                    <p>Heathcare</p>
+                    <input type="text" placeholder="Enter your healthcare..." />
+                  </div>
+                  <div class="sub-detail">
+                    <p>Education</p>
+                    <input type="text" placeholder="Enter your education..." />
+                  </div>
+                  <div class="sub-detail">
+                    <p>Other</p>
+                    <input type="text" placeholder="Enter your ohter..." />
+                  </div>
+                </div>
+
+                <div class="detail-box">
+                  <div class="sub-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem, praesentium?</p>
+                  </div>
+                  <div class="sub-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem, praesentium?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="card-box">
+              <p class="card-title">Summary</p>
+
+              <div class="card-detail">
+                <div class="detail-box">
+                  <div class="sub-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem, praesentium?</p>
+                  </div>
+                  <div class="sub-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem, praesentium?</p>
+                  </div>
+                </div>
+
+                <div class="detail-box">
+                  <div class="sub-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem, praesentium?</p>
+                  </div>
+                  <div class="sub-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem, praesentium?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ---------- Handler ---------- -->
+          <div class="handler">
+            <button type="button" id="prev-Btn">Prev</button>
+            <button type="button" id="next-Btn">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <!-- <script src="script.js"></script> -->
+  </body>
+</html>
