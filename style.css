@@ -57,7 +57,7 @@ body {
 /* ----- Step Container ----- */
 .step-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 1000px;
   display: flex;
   justify-content: space-between;
   align-items: center;
