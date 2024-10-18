@@ -36,15 +36,16 @@ function updateStep() {
 }
 
 function updateButton() {
-  if (pagesCount.get() === 0) {
-    document.getElementById("prev-Btn").style.visibility = "hidden";
-    document.getElementById("next-Btn").style.visibility = "visible";
-  } else if (pagesCount.get() === 2) {
-    document.getElementById("prev-Btn").style.visibility = "hidden";
-    document.getElementById("next-Btn").style.visibility = "hidden";
+  if (pagesCount.get()) {
+    document.getElementById("prev-Btn").disabled = false;
   } else {
-    document.getElementById("prev-Btn").style.visibility = "visible";
-    document.getElementById("next-Btn").style.visibility = "visible";
+    document.getElementById("prev-Btn").disabled = true;    
+  }
+  
+  if (pagesCount.get() < 2) {
+    document.getElementById("next-Btn").disabled = false;
+  } else {
+    document.getElementById("next-Btn").disabled = true;
   }
 }
 
