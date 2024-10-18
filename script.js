@@ -5,7 +5,7 @@ import { atom } from "https://unpkg.com/nanostores";
 let pageStores = [
   {
     name: "Income",
-    detail: ["Salary", "Bonus", "Bonus", "Investment", "Other"],
+    detail: ["Salary", "Bonus", "Investment", "Other"],
   },
   {
     name: "Expenses",
@@ -202,4 +202,65 @@ function updateButton() {
   } else {
     document.getElementById("next-btn").disabled = true;
   }
+}
+
+// -------------------- Income Section --------------------
+let salaryInput = atom(0);
+let bonusInput = atom(0);
+let investInput = atom(0);
+let otherInput = atom(0);
+let sumIncomeMonth = atom(0);
+let sumIncomeYear = atom(0);
+
+/** Binding */
+// Salary Input
+document.getElementById("salary-input").onchange = (e) => {
+  salaryInput.set(Number(e.target.value));
+};
+
+salaryInput.subscribe((value) => {
+  document.getElementById("salary-input").value = value;
+});
+
+// Bonus Input
+document.getElementById("bonus-input").onchange = (e) => {
+  bonusInput.set(Number(e.target.value));
+};
+
+bonusInput.subscribe((value) => {
+  document.getElementById("bonus-input").value = value;
+});
+
+// Investment Input
+document.getElementById("investment-input").onchange = (e) => {
+  investInput.set(Number(e.target.value));
+};
+
+investInput.subscribe((value) => {
+  document.getElementById("investment-input").value = value;
+});
+
+// Other Input
+document.getElementById("other-input").onchange = (e) => {
+  otherInput.set(Number(e.target.value));
+};
+
+otherInput.subscribe((value) => {
+  document.getElementById("other-input").value = value;
+});
+
+/** Pages Reactivity */
+salaryInput.subscribe(sumIncome);
+bonusInput.subscribe(sumIncome);
+investInput.subscribe(sumIncome);
+otherInput.subscribe(sumIncome);
+
+function sumIncome() {
+  const totalMonth = salaryInput.get() + bonusInput.get() + investInput.get() + otherInput.get();
+  sumIncomeMonth.set(totalMonth);
+  console.log(`totalMonth: ${sumIncomeMonth.get()}`);
+
+  const totalYear = sumIncomeMonth.get() * 12;
+  sumIncomeYear.set(totalYear);
+  console.log(`totalYear: ${sumIncomeYear.get()}`);
 }
