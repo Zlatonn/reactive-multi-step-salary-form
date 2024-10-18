@@ -5,15 +5,18 @@ import { atom } from "https://unpkg.com/nanostores";
 let pageStores = [
   {
     name: "Income",
-    detail: ["Salary", "Bonus", "Investment", "Other"],
+    leftDetail: ["Salary", "Bonus", "Investment", "Other"],
+    rightDetail: 2
   },
   {
     name: "Expenses",
-    detail: ["Housing", "Food", "Transportation", "Heathcare", "Education", "Other"],
+    leftDetail: ["Housing", "Food", "Transportation", "Heathcare", "Education", "Other"],
+    rightDetail: 2
   },
   {
     name: "Summary",
-    detail: [],
+    leftDetail: 3,
+    rightDetail: 3
   },
 ];
 
@@ -53,7 +56,7 @@ function createBullet() {
 function createCard() {
   const cardContainer = document.querySelector(".card-container");
 
-  pageStores.forEach((e, i) => {
+  pageStores.forEach(e => {
     const cardBox = document.createElement("div");
     cardBox.classList.add("card-box");
 
@@ -78,10 +81,9 @@ function createCard() {
     cardDetail.appendChild(leftBox);
     cardDetail.appendChild(rightBox);
 
-    // Insert Detail Box
-
-    if (e.detail && e.detail.length > 0) {
-      e.detail.forEach((d) => {
+    // Insert Detail Left Box
+    if (Array.isArray(e.leftDetail)) {
+      e.leftDetail.forEach((d) => {
         const subDetailLeft = document.createElement("div");
         subDetailLeft.classList.add("sub-detail");
 
@@ -100,7 +102,7 @@ function createCard() {
         leftBox.appendChild(subDetailLeft);
       });
     } else {
-      for (let count = 0; count < 2; count++) {
+      for (let count = 0; count < e.leftDetail; count++) {
         const subDetailLeft = document.createElement("div");
         subDetailLeft.classList.add("sub-detail");
 
@@ -112,7 +114,8 @@ function createCard() {
       }
     }
 
-    for (let count = 0; count < 2; count++) {
+    // Insert Detail Right Box
+    for (let count = 0; count < e.rightDetail; count++) {
       const subDetailRight = document.createElement("div");
       subDetailRight.classList.add("sub-detail");
 
@@ -249,7 +252,7 @@ otherInput.subscribe((value) => {
   document.getElementById("other-input").value = value;
 });
 
-/** Pages Reactivity */
+/** Income Reactivity */
 salaryInput.subscribe(sumIncome);
 bonusInput.subscribe(sumIncome);
 investInput.subscribe(sumIncome);
