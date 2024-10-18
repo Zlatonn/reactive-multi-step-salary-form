@@ -1,19 +1,27 @@
 import { atom } from "https://unpkg.com/nanostores";
+
+// -------------------- Pages Management --------------------
 let pagesCount = atom(0);
 
+/** Set pages states */
 document.querySelectorAll(".step-box").forEach((e, i) => {
   e.onclick = () => {
     pagesCount.set(i);
   };
 });
 
-document.getElementById("prev-Btn").onclick = () => {
+document.getElementById("prev-btn").onclick = () => {
   pagesCount.set(pagesCount.get() - 1);
 };
 
-document.getElementById("next-Btn").onclick = () => {
+document.getElementById("next-btn").onclick = () => {
   pagesCount.set(pagesCount.get() + 1);
 };
+
+/** Pages Reactivity */
+pagesCount.subscribe(updatePage);
+pagesCount.subscribe(updateStep);
+pagesCount.subscribe(updateButton);
 
 function updatePage() {
   const translateX = -pagesCount.get() * 100;
@@ -37,19 +45,14 @@ function updateStep() {
 
 function updateButton() {
   if (pagesCount.get()) {
-    document.getElementById("prev-Btn").disabled = false;
+    document.getElementById("prev-btn").disabled = false;
   } else {
-    document.getElementById("prev-Btn").disabled = true;    
+    document.getElementById("prev-btn").disabled = true;
   }
-  
+
   if (pagesCount.get() < 2) {
-    document.getElementById("next-Btn").disabled = false;
+    document.getElementById("next-btn").disabled = false;
   } else {
-    document.getElementById("next-Btn").disabled = true;
+    document.getElementById("next-btn").disabled = true;
   }
 }
-
-// Page Reactive
-pagesCount.subscribe(updatePage);
-pagesCount.subscribe(updateStep);
-pagesCount.subscribe(updateButton);
