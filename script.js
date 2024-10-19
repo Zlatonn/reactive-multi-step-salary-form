@@ -6,17 +6,17 @@ let pageStores = [
   {
     name: "Income",
     leftDetail: ["Salary", "Bonus", "Investment", "Other"],
-    rightDetail: 2
+    rightDetail: 2,
   },
   {
     name: "Expenses",
     leftDetail: ["Housing", "Food", "Transportation", "Heathcare", "Education", "Other"],
-    rightDetail: 2
+    rightDetail: 2,
   },
   {
     name: "Summary",
     leftDetail: 3,
-    rightDetail: 3
+    rightDetail: 3,
   },
 ];
 
@@ -56,7 +56,7 @@ function createBullet() {
 function createCard() {
   const cardContainer = document.querySelector(".card-container");
 
-  pageStores.forEach(e => {
+  pageStores.forEach((e) => {
     const cardBox = document.createElement("div");
     cardBox.classList.add("card-box");
 
@@ -109,7 +109,7 @@ function createCard() {
         const text = document.createElement("p");
         text.innerHTML = `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque, quia.`;
         text.id = `${e.name.toLowerCase()}-left-text-${count + 1}`;
-          
+
         subDetailLeft.appendChild(text);
         leftBox.appendChild(subDetailLeft);
       }
@@ -260,6 +260,7 @@ bonusInput.subscribe(sumIncome);
 investInput.subscribe(sumIncome);
 otherInput.subscribe(sumIncome);
 
+sumIncomeMonth.subscribe(displayIncome);
 function sumIncome() {
   const totalMonth = salaryInput.get() + bonusInput.get() + investInput.get() + otherInput.get();
   sumIncomeMonth.set(totalMonth);
@@ -271,5 +272,9 @@ function sumIncome() {
 }
 
 function displayIncome() {
-  
+  const text1 = document.getElementById("income-right-text-1");
+  text1.innerHTML = `Total Monthly: ${sumIncomeMonth.get()}`;
+
+  const text2 = document.getElementById("income-right-text-2");
+  text2.innerHTML = `Annual Income: ${sumIncomeYear.get()}`;
 }
