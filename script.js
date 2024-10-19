@@ -108,7 +108,8 @@ function createCard() {
 
         const text = document.createElement("p");
         text.innerHTML = `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque, quia.`;
-
+        text.id = `${e.name.toLowerCase()}-left-text-${count + 1}`;
+          
         subDetailLeft.appendChild(text);
         leftBox.appendChild(subDetailLeft);
       }
@@ -121,6 +122,7 @@ function createCard() {
 
       const text = document.createElement("p");
       text.innerHTML = `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque, quia.`;
+      text.id = `${e.name.toLowerCase()}-right-text-${count + 1}`;
 
       subDetailRight.appendChild(text);
       rightBox.appendChild(subDetailRight);
@@ -266,4 +268,8 @@ function sumIncome() {
   const totalYear = sumIncomeMonth.get() * 12;
   sumIncomeYear.set(totalYear);
   console.log(`totalYear: ${sumIncomeYear.get()}`);
+}
+
+function displayIncome() {
+  
 }
