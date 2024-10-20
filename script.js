@@ -10,7 +10,7 @@ let pageStores = [
   },
   {
     name: "Expenses",
-    leftDetail: ["Housing", "Food", "Transportation", "Heathcare", "Education", "Other"],
+    leftDetail: ["Housing", "Food", "Transportation", "Healthcare", "Education", "Other"],
     rightDetail: 2,
   },
   {
@@ -94,7 +94,7 @@ function createCard() {
         input.type = "number";
         input.value = 0;
         input.min = "0";
-        input.id = `${d.toLowerCase()}-input`;
+        input.id = `${e.name.toLowerCase()}-${d.toLowerCase()}-input`;
 
         subDetailLeft.appendChild(text);
         subDetailLeft.appendChild(input);
@@ -210,59 +210,59 @@ function updateButton() {
 }
 
 // -------------------- Income Section --------------------
-let salaryInput = atom(0);
-let bonusInput = atom(0);
-let investInput = atom(0);
-let otherInput = atom(0);
+let salaryIncome = atom(0);
+let bonusIncome = atom(0);
+let investIncome = atom(0);
+let otherIncome = atom(0);
 let sumIncomeMonth = atom(0);
 let sumIncomeYear = atom(0);
 
 /** Binding */
-// Salary Input
-document.getElementById("salary-input").onchange = (e) => {
-  salaryInput.set(Number(e.target.value));
+// Salary Income
+document.getElementById("income-salary-input").onchange = (e) => {
+  salaryIncome.set(Number(e.target.value));
 };
 
-salaryInput.subscribe((value) => {
-  document.getElementById("salary-input").value = value;
+salaryIncome.subscribe((value) => {
+  document.getElementById("income-salary-input").value = value;
 });
 
 // Bonus Input
-document.getElementById("bonus-input").onchange = (e) => {
-  bonusInput.set(Number(e.target.value));
+document.getElementById("income-bonus-input").onchange = (e) => {
+  bonusIncome.set(Number(e.target.value));
 };
 
-bonusInput.subscribe((value) => {
-  document.getElementById("bonus-input").value = value;
+bonusIncome.subscribe((value) => {
+  document.getElementById("income-bonus-input").value = value;
 });
 
 // Investment Input
-document.getElementById("investment-input").onchange = (e) => {
-  investInput.set(Number(e.target.value));
+document.getElementById("income-investment-input").onchange = (e) => {
+  investIncome.set(Number(e.target.value));
 };
 
-investInput.subscribe((value) => {
-  document.getElementById("investment-input").value = value;
+investIncome.subscribe((value) => {
+  document.getElementById("income-investment-input").value = value;
 });
 
 // Other Input
-document.getElementById("other-input").onchange = (e) => {
-  otherInput.set(Number(e.target.value));
+document.getElementById("income-other-input").onchange = (e) => {
+  otherIncome.set(Number(e.target.value));
 };
 
-otherInput.subscribe((value) => {
-  document.getElementById("other-input").value = value;
+otherIncome.subscribe((value) => {
+  document.getElementById("income-other-input").value = value;
 });
 
 /** Income Reactivity */
-salaryInput.subscribe(sumIncome);
-bonusInput.subscribe(sumIncome);
-investInput.subscribe(sumIncome);
-otherInput.subscribe(sumIncome);
+salaryIncome.subscribe(sumIncome);
+bonusIncome.subscribe(sumIncome);
+investIncome.subscribe(sumIncome);
+otherIncome.subscribe(sumIncome);
 
 sumIncomeMonth.subscribe(displayIncome);
 function sumIncome() {
-  const totalMonth = salaryInput.get() + bonusInput.get() + investInput.get() + otherInput.get();
+  const totalMonth = salaryIncome.get() + bonusIncome.get() + investIncome.get() + otherIncome.get();
   sumIncomeMonth.set(totalMonth);
   console.log(`totalMonth: ${sumIncomeMonth.get()}`);
 
