@@ -190,11 +190,6 @@ body {
   color: var(--text-font);
 }
 
-.sub-detail p span {
-  font-size: var(--small-font-size);
-  color: var(--tab-color-active);
-}
-
 .sub-detail input {
   border: 0;
   outline: 0;

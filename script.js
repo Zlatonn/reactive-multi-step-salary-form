@@ -214,6 +214,7 @@ let salaryIncome = atom(0);
 let bonusIncome = atom(0);
 let investIncome = atom(0);
 let otherIncome = atom(0);
+
 let sumIncomeMonth = atom(0);
 let sumIncomeYear = atom(0);
 
@@ -227,7 +228,7 @@ salaryIncome.subscribe((value) => {
   document.getElementById("income-salary-input").value = value;
 });
 
-// Bonus Input
+// Bonus Income
 document.getElementById("income-bonus-input").onchange = (e) => {
   bonusIncome.set(Number(e.target.value));
 };
@@ -236,7 +237,7 @@ bonusIncome.subscribe((value) => {
   document.getElementById("income-bonus-input").value = value;
 });
 
-// Investment Input
+// Investment Income
 document.getElementById("income-investment-input").onchange = (e) => {
   investIncome.set(Number(e.target.value));
 };
@@ -245,7 +246,7 @@ investIncome.subscribe((value) => {
   document.getElementById("income-investment-input").value = value;
 });
 
-// Other Input
+// Other Income
 document.getElementById("income-other-input").onchange = (e) => {
   otherIncome.set(Number(e.target.value));
 };
@@ -264,17 +265,106 @@ sumIncomeMonth.subscribe(displayIncome);
 function sumIncome() {
   const totalMonth = salaryIncome.get() + bonusIncome.get() + investIncome.get() + otherIncome.get();
   sumIncomeMonth.set(totalMonth);
-  console.log(`totalMonth: ${sumIncomeMonth.get()}`);
 
   const totalYear = sumIncomeMonth.get() * 12;
   sumIncomeYear.set(totalYear);
-  console.log(`totalYear: ${sumIncomeYear.get()}`);
 }
 
 function displayIncome() {
   const text1 = document.getElementById("income-right-text-1");
-  text1.innerHTML = `Total Monthly: ${sumIncomeMonth.get()}`;
+  text1.innerHTML = `<i>" You have monthly income is <span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${sumIncomeMonth.get()}</span> bath. "</i>`;
 
   const text2 = document.getElementById("income-right-text-2");
-  text2.innerHTML = `Annual Income: ${sumIncomeYear.get()}`;
+  text2.innerHTML = `<i>" Your total annual income is <span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${sumIncomeYear.get()}</span> bath. "</i>`;
+}
+
+// -------------------- Expenses Section  --------------------
+let housingExpenses = atom(0);
+let foodExpenses = atom(0);
+let transportationExpenses = atom(0);
+let healthcareExpenses = atom(0);
+let educationExpenses = atom(0);
+let otherExpenses = atom(0);
+
+let sumExpensesMonth = atom(0);
+let sumExpensesYear = atom(0);
+
+/** Binding */
+// Housing Expenses
+document.getElementById("expenses-housing-input").onchange = (e) => {
+  housingExpenses.set(Number(e.target.value));
+};
+
+housingExpenses.subscribe((value) => {
+  document.getElementById("expenses-housing-input").value = value;
+});
+
+// Food Expenses
+document.getElementById("expenses-food-input").onchange = (e) => {
+  foodExpenses.set(Number(e.target.value));
+};
+
+foodExpenses.subscribe((value) => {
+  document.getElementById("expenses-food-input").value = value;
+});
+
+// Transportation Expenses
+document.getElementById("expenses-transportation-input").onchange = (e) => {
+  transportationExpenses.set(Number(e.target.value));
+};
+
+transportationExpenses.subscribe((value) => {
+  document.getElementById("expenses-transportation-input").value = value;
+});
+
+// Healthcare Expenses
+document.getElementById("expenses-healthcare-input").onchange = (e) => {
+  healthcareExpenses.set(Number(e.target.value));
+};
+
+healthcareExpenses.subscribe((value) => {
+  document.getElementById("expenses-healthcare-input").value = value;
+});
+
+// Education Expenses
+document.getElementById("expenses-education-input").onchange = (e) => {
+  educationExpenses.set(Number(e.target.value));
+};
+
+educationExpenses.subscribe((value) => {
+  document.getElementById("expenses-education-input").value = value;
+});
+
+// Other Expenses
+document.getElementById("expenses-other-input").onchange = (e) => {
+otherExpenses.set(Number(e.target.value));
+};
+otherExpenses.subscribe((value) => {
+  document.getElementById("expenses-other-input").value = value;
+});
+
+/** Expense Reactivity */
+
+housingExpenses.subscribe(sumExpenses);
+foodExpenses.subscribe(sumExpenses);
+transportationExpenses.subscribe(sumExpenses);
+healthcareExpenses.subscribe(sumExpenses);
+educationExpenses.subscribe(sumExpenses);
+otherExpenses.subscribe(sumExpenses);
+
+sumExpensesMonth.subscribe(displayExpenses);
+function sumExpenses() {
+  const totalMonth = housingExpenses.get() + foodExpenses.get() + transportationExpenses.get() + healthcareExpenses.get() + educationExpenses.get() + otherExpenses.get();
+  sumExpensesMonth.set(totalMonth);
+
+  const totalYear = sumExpensesMonth.get() * 12;
+  sumExpensesYear.set(totalYear);
+}
+
+function displayExpenses() {
+  const text1 = document.getElementById("expenses-right-text-1");
+  text1.innerHTML = `<i>" You have monthly expenses is <span style ="color:#D35400; font-size: 1rem; font-style:bolder;">${sumExpensesMonth.get()}</span> bath. "</i>`;
+
+  const text2 = document.getElementById("expenses-right-text-2");
+  text2.innerHTML = `<i>" Your total annual expenses is <span style ="color:#D35400; font-size: 1rem; font-style:bolder;">${sumExpensesYear.get()}</span> bath. "</i>`;
 }
