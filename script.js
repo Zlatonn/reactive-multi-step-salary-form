@@ -15,8 +15,8 @@ let pageStores = [
   },
   {
     name: "Summary",
-    leftDetail: 3,
-    rightDetail: 3,
+    leftDetail: 2,
+    rightDetail: 2,
   },
 ];
 
@@ -88,7 +88,7 @@ function createCard() {
         subDetailLeft.classList.add("sub-detail");
 
         const text = document.createElement("p");
-        text.innerHTML = `${d} <span>/month</span>`;
+        text.innerHTML = `${d} <span style="color: rgb(94, 146, 242);">/month</span>`;
 
         const input = document.createElement("input");
         input.type = "number";
@@ -107,7 +107,7 @@ function createCard() {
         subDetailLeft.classList.add("sub-detail");
 
         const text = document.createElement("p");
-        text.innerHTML = `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque, quia.`;
+        text.innerHTML = ``;
         text.id = `${e.name.toLowerCase()}-left-text-${count + 1}`;
 
         subDetailLeft.appendChild(text);
@@ -121,7 +121,7 @@ function createCard() {
       subDetailRight.classList.add("sub-detail");
 
       const text = document.createElement("p");
-      text.innerHTML = `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque, quia.`;
+      text.innerHTML = ``;
       text.id = `${e.name.toLowerCase()}-right-text-${count + 1}`;
 
       subDetailRight.appendChild(text);
@@ -262,6 +262,7 @@ investIncome.subscribe(sumIncome);
 otherIncome.subscribe(sumIncome);
 
 sumIncomeMonth.subscribe(displayIncome);
+
 function sumIncome() {
   const totalMonth = salaryIncome.get() + bonusIncome.get() + investIncome.get() + otherIncome.get();
   sumIncomeMonth.set(totalMonth);
@@ -272,10 +273,14 @@ function sumIncome() {
 
 function displayIncome() {
   const text1 = document.getElementById("income-right-text-1");
-  text1.innerHTML = `<i>" You have monthly income is <span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${sumIncomeMonth.get()}</span> bath. "</i>`;
+  text1.innerHTML = `- monthly income is <b><span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${sumIncomeMonth
+    .get()
+    .toLocaleString()}</span></b> bath. `;
 
   const text2 = document.getElementById("income-right-text-2");
-  text2.innerHTML = `<i>" Your total annual income is <span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${sumIncomeYear.get()}</span> bath. "</i>`;
+  text2.innerHTML = `- annual income is <b><span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${sumIncomeYear
+    .get()
+    .toLocaleString()}</span></b> bath.`;
 }
 
 // -------------------- Expenses Section  --------------------
@@ -337,7 +342,7 @@ educationExpenses.subscribe((value) => {
 
 // Other Expenses
 document.getElementById("expenses-other-input").onchange = (e) => {
-otherExpenses.set(Number(e.target.value));
+  otherExpenses.set(Number(e.target.value));
 };
 otherExpenses.subscribe((value) => {
   document.getElementById("expenses-other-input").value = value;
@@ -353,8 +358,15 @@ educationExpenses.subscribe(sumExpenses);
 otherExpenses.subscribe(sumExpenses);
 
 sumExpensesMonth.subscribe(displayExpenses);
+
 function sumExpenses() {
-  const totalMonth = housingExpenses.get() + foodExpenses.get() + transportationExpenses.get() + healthcareExpenses.get() + educationExpenses.get() + otherExpenses.get();
+  const totalMonth =
+    housingExpenses.get() +
+    foodExpenses.get() +
+    transportationExpenses.get() +
+    healthcareExpenses.get() +
+    educationExpenses.get() +
+    otherExpenses.get();
   sumExpensesMonth.set(totalMonth);
 
   const totalYear = sumExpensesMonth.get() * 12;
@@ -363,8 +375,58 @@ function sumExpenses() {
 
 function displayExpenses() {
   const text1 = document.getElementById("expenses-right-text-1");
-  text1.innerHTML = `<i>" You have monthly expenses is <span style ="color:#D35400; font-size: 1rem; font-style:bolder;">${sumExpensesMonth.get()}</span> bath. "</i>`;
+  text1.innerHTML = `- monthly expenses is <b><span style ="color:#D35400; font-size: 1rem;">${sumExpensesMonth
+    .get()
+    .toLocaleString()}</span></b> bath.</i>`;
 
   const text2 = document.getElementById("expenses-right-text-2");
-  text2.innerHTML = `<i>" Your total annual expenses is <span style ="color:#D35400; font-size: 1rem; font-style:bolder;">${sumExpensesYear.get()}</span> bath. "</i>`;
+  text2.innerHTML = `- annual expenses is <b><span style ="color:#D35400; font-size: 1rem;">${sumExpensesYear
+    .get()
+    .toLocaleString()}</span></b> bath.`;
+}
+
+// -------------------- Summary Section  --------------------
+let annualProfit = atom(0);
+
+sumIncomeYear.listen(calAnnualProfit);
+sumExpensesYear.listen(calAnnualProfit);
+
+annualProfit.listen(displaySummary);
+
+function calAnnualProfit() {
+  annualProfit.set(sumIncomeYear.get() - sumExpensesYear.get());
+}
+
+function displaySummary() {
+  const textSummary = document.getElementById("summary-left-text-1");
+  textSummary.innerHTML = `<i>" You earn a <b>total income of ${sumIncomeYear
+    .get()
+    .toLocaleString()}</b> baht per year, with an <b><span style="color: rgb(94, 146, 242);">annual profit of ${annualProfit
+    .get()
+    .toLocaleString()}</span></b> baht remaining at the end of each year. "</i>`;
+
+  const textGroups = document.getElementById("summary-left-text-2");
+  if (sumIncomeYear.get() < 100000) {
+    textGroups.innerHTML = `<i>" You're <b>Bottom 20%</b>: This group of the population has an average annual income of <b>less than 100,000</b> baht.</i> "`;
+  } else if (sumIncomeYear.get() >= 100000 && sumIncomeYear.get() < 200000) {
+    textGroups.innerHTML = `<i>" You're <b>Second 20%</b>: This group of the population has an average annual income of <b>100,000 - 200,000</b> baht.</i> "`;
+  } else if (sumIncomeYear.get() >= 200000 && sumIncomeYear.get() < 400000) {
+    textGroups.innerHTML = `<i>" You're <b>Middle 20%</b>: This group of the population has an average annual income of <b>200,000 - 400,000</b> baht. "`;
+  } else if (sumIncomeYear.get() >= 400000 && sumIncomeYear.get() < 800000) {
+    textGroups.innerHTML = `<i>" You're <b>Fourth 20%</b>: This group of the population has an average annual income of <b>400,000 - 800,000</b> baht.</i> "`;
+  } else if (sumIncomeYear.get() >= 800000) {
+    textGroups.innerHTML = `<i>" You're <b>Top 20%</b>: This group of the population has an average annual income of more than <b>800,000 baht.</b></i> "`;
+  } else {
+    textGroups.innerHTML = ``;
+  }
+
+  const textIncomeCashflow = document.getElementById("summary-right-text-1");
+  textIncomeCashflow.innerHTML = `<span style="color: #5bbb72;">- positive cash flow <b>/month:</b> ${sumIncomeMonth.get().toLocaleString()}
+                              <br>- positive cash flow <b>/year:</b> ${sumIncomeYear.get().toLocaleString()}</span>`;
+
+  const textExpensesCashflow = document.getElementById("summary-right-text-2");
+  textExpensesCashflow.innerHTML = `<span style="color: #D35400;">- negative cash flow <b>/month:</b> ${sumExpensesMonth
+    .get()
+    .toLocaleString()}
+                              <br>- negative cash flow <b>/year:</b> ${sumExpensesYear.get().toLocaleString()}</span>`;
 }
