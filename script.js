@@ -22,28 +22,15 @@ let pageStores = [
 
 createBullet();
 createCard();
-createHandlerButton();
+createHandler();
 
+/** Create Bullet */
 function createBullet() {
   const stepContainer = document.querySelector(".step-container");
 
   pageStores.forEach((e, i) => {
-    const stepBox = document.createElement("div");
-    stepBox.classList.add("step-box");
-
-    const stepNum = document.createElement("div");
-    stepNum.classList.add("step-num");
-
-    const stepDetail = document.createElement("div");
-    stepDetail.classList.add("step-detail");
-
+    const stepBox = createStepBox(i, e.name);
     stepContainer.appendChild(stepBox);
-
-    stepBox.appendChild(stepNum);
-    stepNum.innerHTML = i + 1;
-
-    stepBox.appendChild(stepDetail);
-    stepDetail.innerHTML = e.name;
 
     if (i < pageStores.length - 1) {
       const stepLine = document.createElement("div");
@@ -53,103 +40,128 @@ function createBullet() {
   });
 }
 
+function createStepBox(i, name) {
+  const stepBox = document.createElement("div");
+  stepBox.classList.add("step-box");
+
+  const stepNum = document.createElement("div");
+  stepNum.classList.add("step-num");
+  stepNum.innerHTML = i + 1;
+
+  const stepDetail = document.createElement("div");
+  stepDetail.classList.add("step-detail");
+  stepDetail.innerHTML = name;
+
+  stepBox.append(stepNum, stepDetail);
+
+  return stepBox;
+}
+
+/** Create Card */
 function createCard() {
   const cardContainer = document.querySelector(".card-container");
 
   pageStores.forEach((e) => {
-    const cardBox = document.createElement("div");
-    cardBox.classList.add("card-box");
-
-    const cardTitle = document.createElement("p");
-    cardTitle.classList.add("card-title");
-    cardTitle.innerHTML = e.name;
-
-    const cardDetail = document.createElement("div");
-    cardDetail.classList.add("card-detail");
-
-    const leftBox = document.createElement("div");
-    leftBox.classList.add("left-box");
-
-    const rightBox = document.createElement("div");
-    rightBox.classList.add("right-box");
-
+    const cardBox = createCardBox(e);
     cardContainer.appendChild(cardBox);
-
-    cardBox.appendChild(cardTitle);
-    cardBox.appendChild(cardDetail);
-
-    cardDetail.appendChild(leftBox);
-    cardDetail.appendChild(rightBox);
-
-    // Insert Detail Left Box
-    if (Array.isArray(e.leftDetail)) {
-      e.leftDetail.forEach((d) => {
-        const subDetailLeft = document.createElement("div");
-        subDetailLeft.classList.add("sub-detail");
-
-        const text = document.createElement("p");
-        text.innerHTML = `${d} <span style="color: rgb(94, 146, 242);">/month</span>`;
-
-        const input = document.createElement("input");
-        input.type = "number";
-        input.value = 0;
-        input.min = "0";
-        input.id = `${e.name.toLowerCase()}-${d.toLowerCase()}-input`;
-
-        subDetailLeft.appendChild(text);
-        subDetailLeft.appendChild(input);
-
-        leftBox.appendChild(subDetailLeft);
-      });
-    } else {
-      for (let count = 0; count < e.leftDetail; count++) {
-        const subDetailLeft = document.createElement("div");
-        subDetailLeft.classList.add("sub-detail");
-
-        const text = document.createElement("p");
-        text.innerHTML = ``;
-        text.id = `${e.name.toLowerCase()}-left-text-${count + 1}`;
-
-        subDetailLeft.appendChild(text);
-        leftBox.appendChild(subDetailLeft);
-      }
-    }
-
-    // Insert Detail Right Box
-    for (let count = 0; count < e.rightDetail; count++) {
-      const subDetailRight = document.createElement("div");
-      subDetailRight.classList.add("sub-detail");
-
-      const text = document.createElement("p");
-      text.innerHTML = ``;
-      text.id = `${e.name.toLowerCase()}-right-text-${count + 1}`;
-
-      subDetailRight.appendChild(text);
-      rightBox.appendChild(subDetailRight);
-    }
   });
 }
 
-function createHandlerButton() {
+function createCardBox(e) {
+  const cardBox = document.createElement("div");
+  cardBox.classList.add("card-box");
+
+  const cardTitle = createCardTitle(e.name);
+  const cardDetail = createCardDetail(e);
+
+  cardBox.append(cardTitle, cardDetail);
+
+  return cardBox;
+}
+
+function createCardTitle(name) {
+  const cardTitle = document.createElement("p");
+  cardTitle.classList.add("card-title");
+  cardTitle.innerHTML = name;
+
+  return cardTitle;
+}
+
+function createCardDetail(e) {
+  const cardDetail = document.createElement("div");
+  cardDetail.classList.add("card-detail");
+
+  const leftBox = createDetailBox(e.leftDetail, "left", e.name);
+  const rightBox = createDetailBox(e.rightDetail, "right", e.name);
+
+  cardDetail.append(leftBox, rightBox);
+  return cardDetail;
+}
+
+function createDetailBox(detailData, side, name) {
+  const box = document.createElement("div");
+  box.classList.add(`${side}-box`);
+
+  if (Array.isArray(detailData)) {
+    detailData.forEach((detail) => box.appendChild(createSubDetail(detail, side, name)));
+  } else {
+    for (let count = 0; count < detailData; count++) {
+      box.appendChild(createSubDetail("", side, name, count));
+    }
+  }
+
+  return box;
+}
+
+function createSubDetail(text, side, name, count = "") {
+  const subDetail = document.createElement("div");
+  subDetail.classList.add("sub-detail");
+
+  const pText = document.createElement("p");
+  const input = text ? createInputField(name, text) : "";
+
+  pText.innerHTML = text ? `${text} <span style="color: rgb(94, 146, 242);">/month</span>` : ``;
+  pText.id = text ? `` : `${name.toLowerCase()}-${side}-text-${count + 1}`;
+  subDetail.appendChild(pText);
+
+  if (input) {
+    subDetail.appendChild(input);
+  }
+
+  return subDetail;
+}
+
+function createInputField(name, text) {
+  const input = document.createElement("input");
+  input.type = "number";
+  input.value = 0;
+  input.min = "0";
+  input.id = `${name.toLowerCase()}-${text.toLowerCase()}-input`;
+
+  return input;
+}
+
+/** Create Handle */
+function createHandler() {
   const bodyBox = document.querySelector(".body-box");
 
   const handler = document.createElement("div");
   handler.classList.add("handler");
-
-  const prevBtn = document.createElement("button");
-  prevBtn.type = "botton";
-  prevBtn.id = "prev-btn";
-  prevBtn.innerHTML = `<i class="ri-arrow-left-s-fill"></i> Prev`;
-
-  const nextBtn = document.createElement("button");
-  nextBtn.type = "botton";
-  nextBtn.id = "next-btn";
-  nextBtn.innerHTML = `Next <i class="ri-arrow-right-s-fill"></i>`;
-
-  handler.appendChild(prevBtn);
-  handler.appendChild(nextBtn);
-
   bodyBox.appendChild(handler);
+
+  const prevBtn = createHandlerButton("prev");
+  const nextBtn = createHandlerButton("next");
+
+  handler.append(prevBtn, nextBtn);
+}
+
+function createHandlerButton(typeBtn) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.id = `${typeBtn}-btn`;
+  btn.innerHTML = typeBtn === "prev" ? `<i class="ri-arrow-left-s-fill"></i> Prev` : `Next <i class="ri-arrow-right-s-fill"></i>`;
+
+  return btn;
 }
 
 // -------------------- Pages Management --------------------
@@ -267,7 +279,7 @@ function sumIncome() {
   const totalMonth = salaryIncome.get() + bonusIncome.get() + investIncome.get() + otherIncome.get();
   sumIncomeMonth.set(totalMonth);
 
-  const totalYear = sumIncomeMonth.get() * 12;
+  const totalYear = totalMonth * 12;
   sumIncomeYear.set(totalYear);
 }
 
@@ -399,11 +411,12 @@ function calAnnualProfit() {
 
 function displaySummary() {
   const textSummary = document.getElementById("summary-left-text-1");
-  textSummary.innerHTML = `<i>" You earn a <b>total income of ${sumIncomeYear
+  textSummary.innerHTML = `
+  <i>" You earn a <b>total income of ${sumIncomeYear
     .get()
-    .toLocaleString()}</b> baht per year, with an <b><span style="color: rgb(94, 146, 242);">annual profit of ${annualProfit
+    .toLocaleString()} baht</b> per year, with an <b><span style="color: rgb(94, 146, 242);">annual profit of ${annualProfit
     .get()
-    .toLocaleString()}</span></b> baht remaining at the end of each year. "</i>`;
+    .toLocaleString()} baht </span></b>remaining at the end of each year. "</i>`;
 
   const textGroups = document.getElementById("summary-left-text-2");
   if (sumIncomeYear.get() < 100000) {
@@ -421,12 +434,12 @@ function displaySummary() {
   }
 
   const textIncomeCashflow = document.getElementById("summary-right-text-1");
-  textIncomeCashflow.innerHTML = `<span style="color: #5bbb72;">- positive cash flow <b>/month:</b> ${sumIncomeMonth.get().toLocaleString()}
-                              <br>- positive cash flow <b>/year:</b> ${sumIncomeYear.get().toLocaleString()}</span>`;
+  textIncomeCashflow.innerHTML = `
+  <span style="color: #5bbb72;">- positive cash flow <b>/month:</b> ${sumIncomeMonth.get().toLocaleString()}
+  <br>- positive cash flow <b>/year:</b> ${sumIncomeYear.get().toLocaleString()}</span>`;
 
   const textExpensesCashflow = document.getElementById("summary-right-text-2");
-  textExpensesCashflow.innerHTML = `<span style="color: #D35400;">- negative cash flow <b>/month:</b> ${sumExpensesMonth
-    .get()
-    .toLocaleString()}
-                              <br>- negative cash flow <b>/year:</b> ${sumExpensesYear.get().toLocaleString()}</span>`;
+  textExpensesCashflow.innerHTML = `
+  <span style="color: #D35400;">- negative cash flow <b>/month:</b> ${sumExpensesMonth.get().toLocaleString()}
+  <br>- negative cash flow <b>/year:</b> ${sumExpensesYear.get().toLocaleString()}</span>`;
 }
