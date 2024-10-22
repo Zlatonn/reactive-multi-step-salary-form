@@ -1,6 +1,6 @@
 import { atom } from "https://unpkg.com/nanostores";
 
-// -------------------- Initial Process (create pages) --------------------
+// -------------------- Initial Process --------------------
 
 let pageStores = [
   {
@@ -287,12 +287,12 @@ function displayIncome() {
   const text1 = document.getElementById("income-right-text-1");
   text1.innerHTML = `- monthly income is <b><span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${sumIncomeMonth
     .get()
-    .toLocaleString()}</span></b> bath. `;
+    .toLocaleString()}</span></b> ฿. `;
 
   const text2 = document.getElementById("income-right-text-2");
   text2.innerHTML = `- annual income is <b><span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${sumIncomeYear
     .get()
-    .toLocaleString()}</span></b> bath.`;
+    .toLocaleString()}</span></b> ฿.`;
 }
 
 // -------------------- Expenses Section  --------------------
@@ -381,7 +381,7 @@ function sumExpenses() {
     otherExpenses.get();
   sumExpensesMonth.set(totalMonth);
 
-  const totalYear = sumExpensesMonth.get() * 12;
+  const totalYear = totalMonth * 12;
   sumExpensesYear.set(totalYear);
 }
 
@@ -389,12 +389,12 @@ function displayExpenses() {
   const text1 = document.getElementById("expenses-right-text-1");
   text1.innerHTML = `- monthly expenses is <b><span style ="color:#D35400; font-size: 1rem;">${sumExpensesMonth
     .get()
-    .toLocaleString()}</span></b> bath.</i>`;
+    .toLocaleString()}</span></b> ฿.</i>`;
 
   const text2 = document.getElementById("expenses-right-text-2");
   text2.innerHTML = `- annual expenses is <b><span style ="color:#D35400; font-size: 1rem;">${sumExpensesYear
     .get()
-    .toLocaleString()}</span></b> bath.`;
+    .toLocaleString()}</span></b> ฿.`;
 }
 
 // -------------------- Summary Section  --------------------
@@ -414,9 +414,9 @@ function displaySummary() {
   textSummary.innerHTML = `
   <i>" You earn a <b>total income of ${sumIncomeYear
     .get()
-    .toLocaleString()} baht</b> per year, with an <b><span style="color: rgb(94, 146, 242);">annual profit of ${annualProfit
+    .toLocaleString()} bath</b> per year, with an <b><span style="color: rgb(94, 146, 242);">annual profit of ${annualProfit
     .get()
-    .toLocaleString()} baht </span></b>remaining at the end of each year. "</i>`;
+    .toLocaleString()} bath </span></b>remaining at the end of each year. "</i>`;
 
   const textGroups = document.getElementById("summary-left-text-2");
   if (sumIncomeYear.get() < 100000) {
@@ -435,11 +435,68 @@ function displaySummary() {
 
   const textIncomeCashflow = document.getElementById("summary-right-text-1");
   textIncomeCashflow.innerHTML = `
-  <span style="color: #5bbb72;">- positive cash flow <b>/month:</b> ${sumIncomeMonth.get().toLocaleString()}
-  <br>- positive cash flow <b>/year:</b> ${sumIncomeYear.get().toLocaleString()}</span>`;
+  <span style="color: #5bbb72;">- income cash flow /month: <b>${sumIncomeMonth.get().toLocaleString()}</b> ฿.
+  <br>- income cash flow /year: <b>${sumIncomeYear.get().toLocaleString()}</b> ฿.</span>`;
 
   const textExpensesCashflow = document.getElementById("summary-right-text-2");
   textExpensesCashflow.innerHTML = `
-  <span style="color: #D35400;">- negative cash flow <b>/month:</b> ${sumExpensesMonth.get().toLocaleString()}
-  <br>- negative cash flow <b>/year:</b> ${sumExpensesYear.get().toLocaleString()}</span>`;
+  <span style="color: #D35400;">- expenses cash flow /month: <b>${sumExpensesMonth.get().toLocaleString()}</b> ฿.
+  <br>- expenses cash flow /year: <b>${sumExpensesYear.get().toLocaleString()}</b> ฿.</span>`;
+}
+
+// -------------------- Data Management  --------------------
+let inputValue = {
+  income: [0, 0, 0, 0],
+  expenses: [0, 0, 0, 0, 0, 0],
+};
+
+/** Update data */
+loadLocalStorage();
+
+function loadLocalStorage() {
+  const storedData = localStorage.getItem("inputValue");
+  if (storedData) {
+    inputValue = JSON.parse(storedData);
+    updateData();
+  }
+}
+
+function updateData() {
+  // Update income
+  salaryIncome.set(inputValue.income[0]);
+  bonusIncome.set(inputValue.income[1]);
+  investIncome.set(inputValue.income[2]);
+  otherIncome.set(inputValue.income[3]);
+
+  // Update expenses
+  housingExpenses.set(inputValue.expenses[0]);
+  foodExpenses.set(inputValue.expenses[1]);
+  transportationExpenses.set(inputValue.expenses[2]);
+  healthcareExpenses.set(inputValue.expenses[3]);
+  educationExpenses.set(inputValue.expenses[4]);
+  otherExpenses.set(inputValue.expenses[5]);
+}
+
+/** Save data */
+pagesCount.listen(saveData);
+
+function saveData() {
+  // Save income
+  inputValue.income[0] = salaryIncome.get();
+  inputValue.income[1] = bonusIncome.get();
+  inputValue.income[2] = investIncome.get();
+  inputValue.income[3] = otherIncome.get();
+
+  // Save expenses
+  inputValue.expenses[0] = housingExpenses.get();
+  inputValue.expenses[1] = foodExpenses.get();
+  inputValue.expenses[2] = transportationExpenses.get();
+  inputValue.expenses[3] = healthcareExpenses.get();
+  inputValue.expenses[4] = educationExpenses.get();
+  inputValue.expenses[5] = otherExpenses.get();
+  saveLocalStorage();
+}
+
+function saveLocalStorage() {
+  localStorage.setItem("inputValue", JSON.stringify(inputValue));
 }
