@@ -244,7 +244,7 @@ let sumIncomeYear = atom(0);
 
 /** Binding */
 // Salary Income
-document.getElementById("income-salary-input").onchange = (e) => {
+document.getElementById("income-salary-input").oninput = (e) => {
   salaryIncome.set(Number(e.target.value));
 };
 
@@ -253,7 +253,7 @@ salaryIncome.subscribe((value) => {
 });
 
 // Bonus Income
-document.getElementById("income-bonus-input").onchange = (e) => {
+document.getElementById("income-bonus-input").oninput = (e) => {
   bonusIncome.set(Number(e.target.value));
 };
 
@@ -262,7 +262,7 @@ bonusIncome.subscribe((value) => {
 });
 
 // Investment Income
-document.getElementById("income-investment-input").onchange = (e) => {
+document.getElementById("income-investment-input").oninput = (e) => {
   investIncome.set(Number(e.target.value));
 };
 
@@ -271,7 +271,7 @@ investIncome.subscribe((value) => {
 });
 
 // Other Income
-document.getElementById("income-other-input").onchange = (e) => {
+document.getElementById("income-other-input").oninput = (e) => {
   otherIncome.set(Number(e.target.value));
 };
 
@@ -320,7 +320,7 @@ let sumExpensesYear = atom(0);
 
 /** Binding */
 // Housing Expenses
-document.getElementById("expenses-housing-input").onchange = (e) => {
+document.getElementById("expenses-housing-input").oninput = (e) => {
   housingExpenses.set(Number(e.target.value));
 };
 
@@ -329,7 +329,7 @@ housingExpenses.subscribe((value) => {
 });
 
 // Food Expenses
-document.getElementById("expenses-food-input").onchange = (e) => {
+document.getElementById("expenses-food-input").oninput = (e) => {
   foodExpenses.set(Number(e.target.value));
 };
 
@@ -338,7 +338,7 @@ foodExpenses.subscribe((value) => {
 });
 
 // Transportation Expenses
-document.getElementById("expenses-transportation-input").onchange = (e) => {
+document.getElementById("expenses-transportation-input").oninput = (e) => {
   transportationExpenses.set(Number(e.target.value));
 };
 
@@ -347,7 +347,7 @@ transportationExpenses.subscribe((value) => {
 });
 
 // Healthcare Expenses
-document.getElementById("expenses-healthcare-input").onchange = (e) => {
+document.getElementById("expenses-healthcare-input").oninput = (e) => {
   healthcareExpenses.set(Number(e.target.value));
 };
 
@@ -356,7 +356,7 @@ healthcareExpenses.subscribe((value) => {
 });
 
 // Education Expenses
-document.getElementById("expenses-education-input").onchange = (e) => {
+document.getElementById("expenses-education-input").oninput = (e) => {
   educationExpenses.set(Number(e.target.value));
 };
 
@@ -365,7 +365,7 @@ educationExpenses.subscribe((value) => {
 });
 
 // Other Expenses
-document.getElementById("expenses-other-input").onchange = (e) => {
+document.getElementById("expenses-other-input").oninput = (e) => {
   otherExpenses.set(Number(e.target.value));
 };
 otherExpenses.subscribe((value) => {
