@@ -1,6 +1,6 @@
 import { atom } from "https://unpkg.com/nanostores";
 
-// -------------------- Initial Process --------------------
+// ==================== Initial Process ====================
 
 let pageStores = [
   {
@@ -151,20 +151,32 @@ function createHandler() {
 
   const prevBtn = createHandlerButton("prev");
   const nextBtn = createHandlerButton("next");
+  const clearBtn = createHandlerButton("clear");
 
-  handler.append(prevBtn, nextBtn);
+  handler.append(prevBtn, nextBtn, clearBtn);
 }
 
 function createHandlerButton(typeBtn) {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.id = `${typeBtn}-btn`;
-  btn.innerHTML = typeBtn === "prev" ? `<i class="ri-arrow-left-s-fill"></i> Prev` : `Next <i class="ri-arrow-right-s-fill"></i>`;
+
+  switch (typeBtn) {
+    case "prev":
+      btn.innerHTML = `<i class="ri-arrow-left-s-fill"></i> Prev`;
+      break;
+    case "next":
+      btn.innerHTML = `Next <i class="ri-arrow-right-s-fill"></i>`;
+      break;
+    case "clear":
+      btn.innerHTML = `Clear`;
+      break;
+  }
 
   return btn;
 }
 
-// -------------------- Pages Management --------------------
+// ==================== Pages Management ====================
 let pagesCount = atom(0);
 
 /** Set pages states */
@@ -221,7 +233,7 @@ function updateButton() {
   }
 }
 
-// -------------------- Income Section --------------------
+// ==================== Income Section ====================
 let salaryIncome = atom(0);
 let bonusIncome = atom(0);
 let investIncome = atom(0);
@@ -295,7 +307,7 @@ function displayIncome() {
     .toLocaleString()}</span></b> ฿.`;
 }
 
-// -------------------- Expenses Section  --------------------
+// ==================== Expenses Section  ====================
 let housingExpenses = atom(0);
 let foodExpenses = atom(0);
 let transportationExpenses = atom(0);
@@ -397,7 +409,7 @@ function displayExpenses() {
     .toLocaleString()}</span></b> ฿.`;
 }
 
-// -------------------- Summary Section  --------------------
+// ==================== Summary Section  ====================
 let annualProfit = atom(0);
 
 sumIncomeYear.listen(calAnnualProfit);
@@ -444,7 +456,7 @@ function displaySummary() {
   <br>- expenses cash flow /year: <b>${sumExpensesYear.get().toLocaleString()}</b> ฿.</span>`;
 }
 
-// -------------------- Data Management  --------------------
+// ==================== Data Management  ====================
 let inputValue = {
   income: [0, 0, 0, 0],
   expenses: [0, 0, 0, 0, 0, 0],
@@ -500,3 +512,22 @@ function saveData() {
 function saveLocalStorage() {
   localStorage.setItem("inputValue", JSON.stringify(inputValue));
 }
+
+/** Clear data */
+document.getElementById("clear-btn").onclick = () => {
+  // Update income
+  salaryIncome.set(0);
+  bonusIncome.set(0);
+  investIncome.set(0);
+  otherIncome.set(0);
+
+  // Update expenses
+  housingExpenses.set(0);
+  foodExpenses.set(0);
+  transportationExpenses.set(0);
+  healthcareExpenses.set(0);
+  educationExpenses.set(0);
+  otherExpenses.set(0);
+
+  saveData();
+};

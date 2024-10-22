@@ -233,3 +233,7 @@ body {
 .handler button:hover {
   transform: scale(1.1);
 }
+
+#clear-btn {
+  background: #d35400;
+}
