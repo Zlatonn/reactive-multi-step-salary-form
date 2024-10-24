@@ -5,7 +5,7 @@ import { atom } from "https://unpkg.com/nanostores";
 let pageStores = [
   {
     name: "Income",
-    leftDetail: ["Salary", "Bonus", "Investment", "Other"],
+    leftDetail: ["Salary", "Extra", "Bonus", "Investment", "Other"],
     rightDetail: 2,
   },
   {
@@ -120,7 +120,11 @@ function createSubDetail(text, side, name, count = "") {
   const pText = document.createElement("p");
   const input = text ? createInputField(name, text) : "";
 
-  pText.innerHTML = text ? `${text} <span style="color: rgb(94, 146, 242);">/month</span>` : ``;
+  pText.innerHTML = text
+    ? (text === "Bonus" && name === "Income") || (text === "Investment" && name === "Income")
+      ? `${text} <span style="color: rgb(94, 146, 242);">/year</span>`
+      : `${text} <span style="color: rgb(94, 146, 242);">/month</span>`
+    : ``;
   pText.id = text ? `` : `${name.toLowerCase()}-${side}-text-${count + 1}`;
   subDetail.appendChild(pText);
 
@@ -200,16 +204,18 @@ pagesCount.subscribe(updateStep);
 pagesCount.subscribe(updateButton);
 
 function updatePage() {
-  const translateX = -pagesCount.get() * 100;
+  const count = pagesCount.get();
+  const translateX = -count * 100;
   document.querySelector(".card-container").style.transform = `translateX(${translateX}%)`;
 }
 
 function updateStep() {
+  const count = pagesCount.get();
   document.querySelectorAll(".step-box").forEach((e, i) => {
-    if (pagesCount.get() === i) {
+    if (count === i) {
       e.classList.add("active");
       e.classList.remove("complete");
-    } else if (pagesCount.get() > i) {
+    } else if (count > i) {
       e.classList.remove("active");
       e.classList.add("complete");
     } else {
@@ -220,13 +226,14 @@ function updateStep() {
 }
 
 function updateButton() {
-  if (pagesCount.get()) {
+  const count = pagesCount.get();
+  if (count) {
     document.getElementById("prev-btn").disabled = false;
   } else {
     document.getElementById("prev-btn").disabled = true;
   }
 
-  if (pagesCount.get() < pageStores.length - 1) {
+  if (count < pageStores.length - 1) {
     document.getElementById("next-btn").disabled = false;
   } else {
     document.getElementById("next-btn").disabled = true;
@@ -235,6 +242,7 @@ function updateButton() {
 
 // ==================== Income Section ====================
 let salaryIncome = atom(0);
+let extraIncome = atom(0);
 let bonusIncome = atom(0);
 let investIncome = atom(0);
 let otherIncome = atom(0);
@@ -250,6 +258,15 @@ document.getElementById("income-salary-input").oninput = (e) => {
 
 salaryIncome.subscribe((value) => {
   document.getElementById("income-salary-input").value = value;
+});
+
+// Extra Income
+document.getElementById("income-extra-input").oninput = (e) => {
+  extraIncome.set(Number(e.target.value));
+};
+
+extraIncome.subscribe((value) => {
+  document.getElementById("income-extra-input").value = value;
 });
 
 // Bonus Income
@@ -281,17 +298,19 @@ otherIncome.subscribe((value) => {
 
 /** Income Reactivity */
 salaryIncome.subscribe(sumIncome);
+extraIncome.subscribe(sumIncome);
 bonusIncome.subscribe(sumIncome);
 investIncome.subscribe(sumIncome);
 otherIncome.subscribe(sumIncome);
 
 sumIncomeMonth.subscribe(displayIncome);
+sumIncomeYear.subscribe(displayIncome);
 
 function sumIncome() {
-  const totalMonth = salaryIncome.get() + bonusIncome.get() + investIncome.get() + otherIncome.get();
+  const totalMonth = salaryIncome.get() + extraIncome.get() + otherIncome.get();
   sumIncomeMonth.set(totalMonth);
 
-  const totalYear = totalMonth * 12;
+  const totalYear = totalMonth * 12 + bonusIncome.get() + investIncome.get();
   sumIncomeYear.set(totalYear);
 }
 
