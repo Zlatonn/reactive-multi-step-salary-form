@@ -303,27 +303,12 @@ bonusIncome.subscribe(sumIncome);
 investIncome.subscribe(sumIncome);
 otherIncome.subscribe(sumIncome);
 
-sumIncomeMonth.subscribe(displayIncome);
-sumIncomeYear.subscribe(displayIncome);
-
 function sumIncome() {
   const totalMonth = salaryIncome.get() + extraIncome.get() + otherIncome.get();
   sumIncomeMonth.set(totalMonth);
 
   const totalYear = totalMonth * 12 + bonusIncome.get() + investIncome.get();
   sumIncomeYear.set(totalYear);
-}
-
-function displayIncome() {
-  const text1 = document.getElementById("income-right-text-1");
-  text1.innerHTML = `- monthly income is <b><span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${sumIncomeMonth
-    .get()
-    .toLocaleString()}</span></b> ฿. `;
-
-  const text2 = document.getElementById("income-right-text-2");
-  text2.innerHTML = `- annual income is <b><span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${sumIncomeYear
-    .get()
-    .toLocaleString()}</span></b> ฿.`;
 }
 
 // ==================== Expenses Section  ====================
@@ -400,7 +385,7 @@ healthcareExpenses.subscribe(sumExpenses);
 educationExpenses.subscribe(sumExpenses);
 otherExpenses.subscribe(sumExpenses);
 
-sumExpensesMonth.subscribe(displayExpenses);
+// sumExpensesMonth.subscribe(displayExpenses);
 
 function sumExpenses() {
   const totalMonth =
@@ -416,25 +401,13 @@ function sumExpenses() {
   sumExpensesYear.set(totalYear);
 }
 
-function displayExpenses() {
-  const text1 = document.getElementById("expenses-right-text-1");
-  text1.innerHTML = `- monthly expenses is <b><span style ="color:#D35400; font-size: 1rem;">${sumExpensesMonth
-    .get()
-    .toLocaleString()}</span></b> ฿.</i>`;
-
-  const text2 = document.getElementById("expenses-right-text-2");
-  text2.innerHTML = `- annual expenses is <b><span style ="color:#D35400; font-size: 1rem;">${sumExpensesYear
-    .get()
-    .toLocaleString()}</span></b> ฿.`;
-}
-
 // ==================== Summary Section  ====================
 let annualProfit = atom(0);
 
-sumIncomeYear.listen(calAnnualProfit);
-sumExpensesYear.listen(calAnnualProfit);
+sumIncomeYear.subscribe(calAnnualProfit);
+sumExpensesYear.subscribe(calAnnualProfit);
 
-annualProfit.listen(displaySummary);
+annualProfit.subscribe(displaySummary);
 
 function calAnnualProfit() {
   annualProfit.set(sumIncomeYear.get() - sumExpensesYear.get());
@@ -463,16 +436,47 @@ function displaySummary() {
   } else {
     textGroups.innerHTML = ``;
   }
+}
 
-  const textIncomeCashflow = document.getElementById("summary-right-text-1");
-  textIncomeCashflow.innerHTML = `
-  <span style="color: #5bbb72;">- income cash flow /month: <b>${sumIncomeMonth.get().toLocaleString()}</b> ฿.
-  <br>- income cash flow /year: <b>${sumIncomeYear.get().toLocaleString()}</b> ฿.</span>`;
+sumIncomeMonth.subscribe(displayRight);
+sumIncomeYear.subscribe(displayRight);
+sumExpensesMonth.subscribe(displayRight);
 
-  const textExpensesCashflow = document.getElementById("summary-right-text-2");
-  textExpensesCashflow.innerHTML = `
-  <span style="color: #D35400;">- expenses cash flow /month: <b>${sumExpensesMonth.get().toLocaleString()}</b> ฿.
-  <br>- expenses cash flow /year: <b>${sumExpensesYear.get().toLocaleString()}</b> ฿.</span>`;
+function displayRight() {
+  pageStores.forEach((e) => {
+    const text1 = document.getElementById(`${e.name.toLowerCase()}-right-text-1`);
+    const text2 = document.getElementById(`${e.name.toLowerCase()}-right-text-2`);
+
+    const [textMonth, textYear] = getText();
+    text1.innerHTML = textMonth;
+    text2.innerHTML = textYear;
+  });
+}
+
+function getText() {
+  const totalIncomeMonth = sumIncomeMonth.get();
+  const totalExpensesMonth = sumExpensesMonth.get();
+
+  const totalIncomeYear = sumIncomeYear.get();
+  const totalExpensesYear = sumExpensesYear.get();
+
+  const monthlyCashFlow = totalIncomeMonth - totalExpensesMonth;
+  const annualCashFlow = totalIncomeYear - totalExpensesYear;
+
+  const monthlyCashFlowColor = monthlyCashFlow >= 0 ? "#5bbb72" : "#ff605a";
+  const annualCashFlowColor = annualCashFlow >= 0 ? "#5bbb72" : "#ff605a";
+
+  const textMonth = `
+  - monthly income = <b><span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${totalIncomeMonth.toLocaleString()}</span></b> ฿.<br>
+  - monthly expenses = <b><span style ="color:#ff605a; font-size: 1rem;">${totalExpensesMonth.toLocaleString()}</span></b> ฿.<br>
+  - monthly cash flow = <b><span style ="color:${monthlyCashFlowColor}; font-size: 1rem; font-style:bolder;">${monthlyCashFlow.toLocaleString()}</span></b> ฿.`;
+
+  const textYear = `
+  - annual income = <b><span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${totalIncomeYear.toLocaleString()}</span></b> ฿.<br>
+  - annual expenses = <b><span style ="color:#ff605a; font-size: 1rem;">${totalExpensesYear.toLocaleString()}</span></b> ฿.<br>
+  - annual cash flow = <b><span style ="color:${annualCashFlowColor}; font-size: 1rem; font-style:bolder;">${annualCashFlow.toLocaleString()}</span></b> ฿.`;
+
+  return [textMonth, textYear];
 }
 
 // ==================== Data Management  ====================
