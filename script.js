@@ -1,8 +1,5 @@
-import { atom } from "https://unpkg.com/nanostores";
-
-// ==================== Initial Process ====================
-
-let pageStores = [
+// ==================== Initial Process Section ====================
+export let pageStores = [
   {
     name: "Income",
     leftDetail: ["Salary", "Extra", "Bonus", "Investment", "Other"],
@@ -20,11 +17,6 @@ let pageStores = [
   },
 ];
 
-createBullet();
-createCard();
-createHandler();
-
-/** Create Bullet */
 function createBullet() {
   const stepContainer = document.querySelector(".step-container");
 
@@ -180,264 +172,60 @@ function createHandlerButton(typeBtn) {
   return btn;
 }
 
-// ==================== Pages Management ====================
-let pagesCount = atom(0);
+createBullet();
+createCard();
+createHandler();
 
-/** Set pages states */
-document.querySelectorAll(".step-box").forEach((e, i) => {
-  e.onclick = () => {
-    pagesCount.set(i);
-  };
-});
+// ==================== Pages Management Section ====================
+// Import variable
+import { pagesCount } from "./js/pageManage.js";
 
-document.getElementById("prev-btn").onclick = () => {
-  pagesCount.set(pagesCount.get() - 1);
-};
-
-document.getElementById("next-btn").onclick = () => {
-  pagesCount.set(pagesCount.get() + 1);
-};
-
-/** Pages Reactivity */
-pagesCount.subscribe(updatePage);
-pagesCount.subscribe(updateStep);
-pagesCount.subscribe(updateButton);
-
-function updatePage() {
-  const count = pagesCount.get();
-  const translateX = -count * 100;
-  document.querySelector(".card-container").style.transform = `translateX(${translateX}%)`;
-}
-
-function updateStep() {
-  const count = pagesCount.get();
-  document.querySelectorAll(".step-box").forEach((e, i) => {
-    if (count === i) {
-      e.classList.add("active");
-      e.classList.remove("complete");
-    } else if (count > i) {
-      e.classList.remove("active");
-      e.classList.add("complete");
-    } else {
-      e.classList.remove("active");
-      e.classList.remove("complete");
-    }
-  });
-}
-
-function updateButton() {
-  const count = pagesCount.get();
-  if (count) {
-    document.getElementById("prev-btn").disabled = false;
-  } else {
-    document.getElementById("prev-btn").disabled = true;
-  }
-
-  if (count < pageStores.length - 1) {
-    document.getElementById("next-btn").disabled = false;
-  } else {
-    document.getElementById("next-btn").disabled = true;
-  }
-}
+// Import function
+import { setupPageCount } from "./js/pageManage.js";
+setupPageCount();
 
 // ==================== Income Section ====================
-let salaryIncome = atom(0);
-let extraIncome = atom(0);
-let bonusIncome = atom(0);
-let investIncome = atom(0);
-let otherIncome = atom(0);
+// Import variable
+import { salaryIncome } from "./js/incomeStore.js";
+import { extraIncome } from "./js/incomeStore.js";
+import { bonusIncome } from "./js/incomeStore.js";
+import { investIncome } from "./js/incomeStore.js";
+import { otherIncome } from "./js/incomeStore.js";
+import { sumIncomeMonth } from "./js/incomeStore.js";
+import { sumIncomeYear } from "./js/incomeStore.js";
 
-let sumIncomeMonth = atom(0);
-let sumIncomeYear = atom(0);
-
-/** Binding */
-// Salary Income
-document.getElementById("income-salary-input").oninput = (e) => {
-  salaryIncome.set(Number(e.target.value));
-};
-
-salaryIncome.subscribe((value) => {
-  document.getElementById("income-salary-input").value = value;
-});
-
-// Extra Income
-document.getElementById("income-extra-input").oninput = (e) => {
-  extraIncome.set(Number(e.target.value));
-};
-
-extraIncome.subscribe((value) => {
-  document.getElementById("income-extra-input").value = value;
-});
-
-// Bonus Income
-document.getElementById("income-bonus-input").oninput = (e) => {
-  bonusIncome.set(Number(e.target.value));
-};
-
-bonusIncome.subscribe((value) => {
-  document.getElementById("income-bonus-input").value = value;
-});
-
-// Investment Income
-document.getElementById("income-investment-input").oninput = (e) => {
-  investIncome.set(Number(e.target.value));
-};
-
-investIncome.subscribe((value) => {
-  document.getElementById("income-investment-input").value = value;
-});
-
-// Other Income
-document.getElementById("income-other-input").oninput = (e) => {
-  otherIncome.set(Number(e.target.value));
-};
-
-otherIncome.subscribe((value) => {
-  document.getElementById("income-other-input").value = value;
-});
-
-/** Income Reactivity */
-salaryIncome.subscribe(sumIncome);
-extraIncome.subscribe(sumIncome);
-bonusIncome.subscribe(sumIncome);
-investIncome.subscribe(sumIncome);
-otherIncome.subscribe(sumIncome);
-
-function sumIncome() {
-  const totalMonth = salaryIncome.get() + extraIncome.get() + otherIncome.get();
-  sumIncomeMonth.set(totalMonth);
-
-  const totalYear = totalMonth * 12 + bonusIncome.get() + investIncome.get();
-  sumIncomeYear.set(totalYear);
-}
+// Import function
+import { setupIncome } from "./js/incomeStore.js";
+setupIncome();
 
 // ==================== Expenses Section  ====================
-let housingExpenses = atom(0);
-let foodExpenses = atom(0);
-let transportationExpenses = atom(0);
-let healthcareExpenses = atom(0);
-let educationExpenses = atom(0);
-let otherExpenses = atom(0);
+// Import variable
+import { housingExpenses } from "./js/expensesStore.js";
+import { foodExpenses } from "./js/expensesStore.js";
+import { transportationExpenses } from "./js/expensesStore.js";
+import { healthcareExpenses } from "./js/expensesStore.js";
+import { educationExpenses } from "./js/expensesStore.js";
+import { otherExpenses } from "./js/expensesStore.js";
+import { sumExpensesMonth } from "./js/expensesStore.js";
+import { sumExpensesYear } from "./js/expensesStore.js";
 
-let sumExpensesMonth = atom(0);
-let sumExpensesYear = atom(0);
-
-/** Binding */
-// Housing Expenses
-document.getElementById("expenses-housing-input").oninput = (e) => {
-  housingExpenses.set(Number(e.target.value));
-};
-
-housingExpenses.subscribe((value) => {
-  document.getElementById("expenses-housing-input").value = value;
-});
-
-// Food Expenses
-document.getElementById("expenses-food-input").oninput = (e) => {
-  foodExpenses.set(Number(e.target.value));
-};
-
-foodExpenses.subscribe((value) => {
-  document.getElementById("expenses-food-input").value = value;
-});
-
-// Transportation Expenses
-document.getElementById("expenses-transportation-input").oninput = (e) => {
-  transportationExpenses.set(Number(e.target.value));
-};
-
-transportationExpenses.subscribe((value) => {
-  document.getElementById("expenses-transportation-input").value = value;
-});
-
-// Healthcare Expenses
-document.getElementById("expenses-healthcare-input").oninput = (e) => {
-  healthcareExpenses.set(Number(e.target.value));
-};
-
-healthcareExpenses.subscribe((value) => {
-  document.getElementById("expenses-healthcare-input").value = value;
-});
-
-// Education Expenses
-document.getElementById("expenses-education-input").oninput = (e) => {
-  educationExpenses.set(Number(e.target.value));
-};
-
-educationExpenses.subscribe((value) => {
-  document.getElementById("expenses-education-input").value = value;
-});
-
-// Other Expenses
-document.getElementById("expenses-other-input").oninput = (e) => {
-  otherExpenses.set(Number(e.target.value));
-};
-otherExpenses.subscribe((value) => {
-  document.getElementById("expenses-other-input").value = value;
-});
-
-/** Expense Reactivity */
-
-housingExpenses.subscribe(sumExpenses);
-foodExpenses.subscribe(sumExpenses);
-transportationExpenses.subscribe(sumExpenses);
-healthcareExpenses.subscribe(sumExpenses);
-educationExpenses.subscribe(sumExpenses);
-otherExpenses.subscribe(sumExpenses);
-
-// sumExpensesMonth.subscribe(displayExpenses);
-
-function sumExpenses() {
-  const totalMonth =
-    housingExpenses.get() +
-    foodExpenses.get() +
-    transportationExpenses.get() +
-    healthcareExpenses.get() +
-    educationExpenses.get() +
-    otherExpenses.get();
-  sumExpensesMonth.set(totalMonth);
-
-  const totalYear = totalMonth * 12;
-  sumExpensesYear.set(totalYear);
-}
+// Import function
+import { setupExpenses } from "./js/expensesStore.js";
+setupExpenses();
 
 // ==================== Summary Section  ====================
-let annualProfit = atom(0);
+// Import variable
+import { annualProfit } from "./js/summaryStore.js";
+
+// Import function
+import { calAnnualProfit } from "./js/summaryStore.js";
+import { displaySummary } from "./js/summaryStore.js";
 
 sumIncomeYear.subscribe(calAnnualProfit);
 sumExpensesYear.subscribe(calAnnualProfit);
-
 annualProfit.subscribe(displaySummary);
 
-function calAnnualProfit() {
-  annualProfit.set(sumIncomeYear.get() - sumExpensesYear.get());
-}
-
-function displaySummary() {
-  const textSummary = document.getElementById("summary-left-text-1");
-  textSummary.innerHTML = `
-  <i>" You earn a <b>total income of ${sumIncomeYear
-    .get()
-    .toLocaleString()} bath</b> per year, with an <b><span style="color: rgb(94, 146, 242);">annual profit of ${annualProfit
-    .get()
-    .toLocaleString()} bath </span></b>remaining at the end of each year. "</i>`;
-
-  const textGroups = document.getElementById("summary-left-text-2");
-  if (sumIncomeYear.get() < 100000) {
-    textGroups.innerHTML = `<i>" You're <b>Bottom 20%</b>: This group of the population has an average annual income of <b>less than 100,000</b> baht.</i> "`;
-  } else if (sumIncomeYear.get() >= 100000 && sumIncomeYear.get() < 200000) {
-    textGroups.innerHTML = `<i>" You're <b>Second 20%</b>: This group of the population has an average annual income of <b>100,000 - 200,000</b> baht.</i> "`;
-  } else if (sumIncomeYear.get() >= 200000 && sumIncomeYear.get() < 400000) {
-    textGroups.innerHTML = `<i>" You're <b>Middle 20%</b>: This group of the population has an average annual income of <b>200,000 - 400,000</b> baht. "`;
-  } else if (sumIncomeYear.get() >= 400000 && sumIncomeYear.get() < 800000) {
-    textGroups.innerHTML = `<i>" You're <b>Fourth 20%</b>: This group of the population has an average annual income of <b>400,000 - 800,000</b> baht.</i> "`;
-  } else if (sumIncomeYear.get() >= 800000) {
-    textGroups.innerHTML = `<i>" You're <b>Top 20%</b>: This group of the population has an average annual income of more than <b>800,000 baht.</b></i> "`;
-  } else {
-    textGroups.innerHTML = ``;
-  }
-}
-
+// ==================== Display Right Section  ====================
 sumIncomeMonth.subscribe(displayRight);
 sumIncomeYear.subscribe(displayRight);
 sumExpensesMonth.subscribe(displayRight);
@@ -479,9 +267,9 @@ function getText() {
   return [textMonth, textYear];
 }
 
-// ==================== Data Management  ====================
+// ==================== Data Management Section ====================
 let inputValue = {
-  income: [0, 0, 0, 0],
+  income: [0, 0, 0, 0, 0],
   expenses: [0, 0, 0, 0, 0, 0],
 };
 
@@ -499,9 +287,10 @@ function loadLocalStorage() {
 function updateData() {
   // Update income
   salaryIncome.set(inputValue.income[0]);
-  bonusIncome.set(inputValue.income[1]);
-  investIncome.set(inputValue.income[2]);
-  otherIncome.set(inputValue.income[3]);
+  extraIncome.set(inputValue.income[1]);
+  bonusIncome.set(inputValue.income[2]);
+  investIncome.set(inputValue.income[3]);
+  otherIncome.set(inputValue.income[4]);
 
   // Update expenses
   housingExpenses.set(inputValue.expenses[0]);
@@ -518,9 +307,10 @@ pagesCount.listen(saveData);
 function saveData() {
   // Save income
   inputValue.income[0] = salaryIncome.get();
-  inputValue.income[1] = bonusIncome.get();
-  inputValue.income[2] = investIncome.get();
-  inputValue.income[3] = otherIncome.get();
+  inputValue.income[1] = extraIncome.get();
+  inputValue.income[2] = bonusIncome.get();
+  inputValue.income[3] = investIncome.get();
+  inputValue.income[4] = otherIncome.get();
 
   // Save expenses
   inputValue.expenses[0] = housingExpenses.get();
