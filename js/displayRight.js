@@ -29,15 +29,22 @@ function getText() {
   const monthlyCashFlowColor = monthlyCashFlow >= 0 ? "#5bbb72" : "#ff605a";
   const annualCashFlowColor = annualCashFlow >= 0 ? "#5bbb72" : "#ff605a";
 
+  const monthlyCashFlowSign = monthlyCashFlow >= 0 ? "+" : "-";
+  const annualCashFlowSign = annualCashFlow >= 0 ? "+" : "-";
+
   const textMonth = `
   - monthly income = <b><span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${totalIncomeMonth.toLocaleString()}</span></b> ฿.<br>
   - monthly expenses = <b><span style ="color:#ff605a; font-size: 1rem;">${totalExpensesMonth.toLocaleString()}</span></b> ฿.<br>
-  - monthly cash flow = <b><span style ="color:${monthlyCashFlowColor}; font-size: 1rem; font-style:bolder;">${monthlyCashFlow.toLocaleString()}</span></b> ฿.`;
+  - monthly cash flow = <b><span style ="color:${monthlyCashFlowColor}; font-size: 1rem; font-style:bolder;">${monthlyCashFlowSign}${Math.abs(
+    monthlyCashFlow
+  ).toLocaleString()}</span></b> ฿.`;
 
   const textYear = `
   - annual income = <b><span style ="color:#5bbb72; font-size: 1rem; font-style:bolder;">${totalIncomeYear.toLocaleString()}</span></b> ฿.<br>
   - annual expenses = <b><span style ="color:#ff605a; font-size: 1rem;">${totalExpensesYear.toLocaleString()}</span></b> ฿.<br>
-  - annual cash flow = <b><span style ="color:${annualCashFlowColor}; font-size: 1rem; font-style:bolder;">${annualCashFlow.toLocaleString()}</span></b> ฿.`;
+  - annual cash flow = <b><span style ="color:${annualCashFlowColor}; font-size: 1rem; font-style:bolder;">${annualCashFlowSign}${Math.abs(
+    annualCashFlow
+  ).toLocaleString()}</span></b> ฿.`;
 
   return [textMonth, textYear];
 }
