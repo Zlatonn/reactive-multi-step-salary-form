@@ -2,8 +2,8 @@
 import { atom } from "https://unpkg.com/nanostores";
 
 //Import variable
-import { sumIncomeYear } from "../js/incomeStore.js";
-import { sumExpensesYear } from "../js/expensesStore.js";
+import { sumIncomeYear } from "./incomeStore.js";
+import { sumExpensesYear } from "./expensesStore.js";
 
 //Create variable
 export let annualProfit = atom(0);

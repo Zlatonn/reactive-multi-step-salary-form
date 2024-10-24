@@ -56,16 +56,9 @@ export function setupIncome() {
   otherIncome.subscribe((value) => {
     document.getElementById("income-other-input").value = value;
   });
-
-  /** Income Reactivity */
-  salaryIncome.subscribe(sumIncome);
-  extraIncome.subscribe(sumIncome);
-  bonusIncome.subscribe(sumIncome);
-  investIncome.subscribe(sumIncome);
-  otherIncome.subscribe(sumIncome);
 }
 
-function sumIncome() {
+export function sumIncome() {
   const totalMonth = salaryIncome.get() + extraIncome.get() + otherIncome.get();
   sumIncomeMonth.set(totalMonth);
 

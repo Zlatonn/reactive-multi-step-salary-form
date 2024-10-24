@@ -2,7 +2,7 @@
 import { atom } from "https://unpkg.com/nanostores";
 
 // Import variable
-import { pageStores } from "../script.js";
+import { pageStores } from "./initialProcess.js";
 
 // Create variable
 export let pagesCount = atom(0);
@@ -22,20 +22,15 @@ export function setupPageCount() {
   document.getElementById("next-btn").onclick = () => {
     pagesCount.set(pagesCount.get() + 1);
   };
-
-  /** Pages Reactivity */
-  pagesCount.subscribe(updatePage);
-  pagesCount.subscribe(updateStep);
-  pagesCount.subscribe(updateButton);
 }
 
-function updatePage() {
+export function updatePage() {
   const count = pagesCount.get();
   const translateX = -count * 100;
   document.querySelector(".card-container").style.transform = `translateX(${translateX}%)`;
 }
 
-function updateStep() {
+export function updateStep() {
   const count = pagesCount.get();
   document.querySelectorAll(".step-box").forEach((e, i) => {
     if (count === i) {
@@ -51,7 +46,7 @@ function updateStep() {
   });
 }
 
-function updateButton() {
+export function updateButton() {
   const count = pagesCount.get();
   if (count) {
     document.getElementById("prev-btn").disabled = false;

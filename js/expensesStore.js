@@ -65,17 +65,9 @@ export function setupExpenses() {
   otherExpenses.subscribe((value) => {
     document.getElementById("expenses-other-input").value = value;
   });
-
-  /** Expense Reactivity */
-  housingExpenses.subscribe(sumExpenses);
-  foodExpenses.subscribe(sumExpenses);
-  transportationExpenses.subscribe(sumExpenses);
-  healthcareExpenses.subscribe(sumExpenses);
-  educationExpenses.subscribe(sumExpenses);
-  otherExpenses.subscribe(sumExpenses);
 }
 
-function sumExpenses() {
+export function sumExpenses() {
   const totalMonth =
     housingExpenses.get() +
     foodExpenses.get() +
