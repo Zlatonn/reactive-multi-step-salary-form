@@ -36,7 +36,7 @@ To run the project locally:
 2. **State Management**: The form uses NanoStore to handle and store data between steps.
 3. **Validation**: Each input is validated in real-time, with clear feedback for invalid data.
 
-##📸 Screenshots
+## 📸 Screenshots
 Multi-step Form Overview
 
 
