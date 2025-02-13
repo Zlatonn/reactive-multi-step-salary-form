@@ -42,7 +42,7 @@ Multi-step Form Overview
 
 ## 🌐 Live Demo
 Explore the live version of the form here:
-👉 https://zlatonn.github.io/multi-step-form/
+👉 https://reactive-multi-step-salary-form.netlify.app/
 
 ## 🧑‍💻 Contributors
 Zlatonn
